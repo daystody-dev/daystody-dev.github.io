@@ -3,323 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моё био - Имя Фамилия</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>ඩා Мое био чишо</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+        :root {
+            --primary: #00ffa3;
+            --bg: #08080c;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+        margin: 0;
+        padding: 40px 20px;
+        font-family: 'Inter', sans-serif;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+
+        /* Темный базовый цвет */
+        background-color: #08080c;
+
+        /* Сетка поверх всего */
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        background-attachment: fixed;
+        
+        position: relative;
+        overflow-x: hidden;}
+
+        /* Неоновое пятно 1 (Зеленое) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 255, 163, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
+        /* Неоновое пятно 2 (Фиолетовое) */
+        body::after {
+            content: "";
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(188, 19, 254, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
         }
-
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Левая колонка - профиль */
-        .profile-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-
-        .avatar {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid #667eea;
-            margin-bottom: 25px;
-        }
-
-        .name {
-            font-size: 2.2em;
-            color: #333;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .title {
-            font-size: 1.3em;
-            color: #667eea;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .description {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            text-align: left;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            color: white;
-            text-decoration: none;
-            font-size: 1.4em;
+        
+        .skill {
             transition: all 0.3s ease;
-        }
+            cursor: pointer;}
+            
+        .skill:hover {
+            color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            background: rgba(0, 255, 163, 0.05);
+            transform: scale(1.05);}
 
-        .social-link:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+        .container { max-width: 600px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 28px; padding: 25px; }
 
-        /* Правая колонка - контент */
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .section {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-
-        .section-title {
-            font-size: 1.5em;
-            color: #333;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .skills-grid {
+        /* Секция скролла для музыки */
+        .playlist-container {
+            max-height: 250px; /* Высота блока с треками */
+            overflow-y: auto;
+            padding-right: 10px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
-        .skill-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
+        /* Красивый скроллбар */
+        .playlist-container::-webkit-scrollbar { width: 4px; }
+        .playlist-container::-webkit-scrollbar-track { background: transparent; }
+        .playlist-container::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-        .skill-item:hover {
-            transform: translateY(-3px);
-            background: #667eea;
-            color: white;
+        .track-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            transition: 0.2s;
         }
+        .track-item:hover { border-color: var(--primary); background: rgba(0, 255, 163, 0.03); }
+        .track-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; display: block; color: #eee; }
+        
+        audio { width: 100%; height: 30px; filter: invert(100%) hue-rotate(180deg) brightness(1.4); }
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .project-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            border-left: 4px solid #667eea;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .project-title {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .project-description {
-            color: #666;
-            font-size: 0.9em;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        .tech-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tech-tag {
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-
-        .contact-item i {
-            width: 30px;
-            color: #667eea;
-            font-size: 1.2em;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            text-align: center;
-        }
-
-        .stat-item {
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-            display: block;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9em;
-        }
+        .profile { text-align: center; }
+        .avatar { width: 100px; height: 100px; border-radius: 60px; border: 1px solid var(--primary); margin-bottom: 10px; }
+        .section-h { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: #555; margin-bottom: 15px; }
+        
+        .skills { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill { background: rgba(255, 255, 255, 0.05); padding: 8px 14px; border-radius: 12px; font-size: 0.85rem; border: 1px solid var(--border); }
+        
+        .socials { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .social-btn { text-decoration: none; color: white; padding: 16px; border-radius: 18px; text-align: center; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+        .tg { background: #24A1DE; }
+        .mail { background: #fff; color: #000; }
+        .social-btn:hover { transform: translateY(-3px); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Левая колонка - профиль -->
-        <div class="profile-card">
-            <img src="C:\Users\Dell\Downloads\avatar.jpg" alt="" class="avatar">
-            <h1 class="name">Флэйк</h1>
-            <div class="title">Full-stack разработчик</div>
-            <div class="social-links">
-                <a href="https://github.com/FleykTeam" target="_blank" class="social-link" style="background-color: #333;">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://t.me/fleykich" target="_blank" class="social-link" style="background-color: #0088cc;">
-                    <i class="fab fa-telegram"></i>
-                </a>
-                <a href="https://steamcommunity.com/id/fleykich" target="_blank" class="social-link" style="background-color: #0077b5;">
-                    <i class="fab fa-steam"></i>
-                </a>
+
+<div class="container">
+    <header class="glass-card profile" style="text-align: center;">
+        <img src="avatar.png" alt="Daystody" class="avatar">
+        <h1>Daystody</h1>
+        
+        <div style="margin-top: 30px; text-align: left; border-top: 1px solid var(--border); padding-top: 25px;">
+            <div class="section-h" style="margin-bottom: 15px;">Обо мне</div>
+            
+            <div style="border-left: 2px solid var(--primary); padding-left: 20px; margin-left: 2px;">
+                <p style="color: #ccc; font-size: 1rem; line-height: 1.8; margin: 0;">
+                    Лет - <span style="color: #ffffff; font-weight: 700;">17</span> | ДР - <span style="color: #eee; font-weight: 700;">30 дек.</span> <br>
+                    Создаю игры на Godot и пишу код, который работает (не всегда).
+                    Также я занимаюсь музыкой.
+                </p>
             </div>
         </div>
+    </header>
 
-        <!-- Правая колонка - контент -->
-        <div class="content">
-            <!-- О себе -->
-            <div class="section">
-                <h2 class="section-title">Обо мне</h2>
-                <p>Занимаюсь разработкой телеграм ботов и игр на движке Godot. Пока учусь делать игры на Godot, не просите показать.</p>
-            </div>
 
-            <!-- Навыки -->
-            <div class="section">
-                <h2 class="section-title">Навыки</h2>
-                <div class="skills-grid">
-                    <div class="skill-item">Python</div>
-                    <div class="skill-item">C#</div>
-                    <div class="skill-item">SQL</div>
-                    <div class="skill-item">GDscript</div>
-                    <div class="skill-item">Git</div>
-                    <div class="skill-item">Aiogram</div>
-                </div>
-            </div>
 
-            <!-- Проекты -->
-            <div class="section">
-                <h2 class="section-title">Мои проекты</h2>
-                <div class="projects-grid">
-                    <div class="project-card" style="text-align: center;">
-                        <div style="font-size: 3em; color: #ccc; margin-bottom: 20px;">📁</div>
-                        <div style="color: #666; font-size: 1.2em;">Пока что пусто...</div>
-                        <div style="color: #888; margin-top: 10px;">Здесь скоро появятся мои проекты</div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Контакты -->
-            <div class="section">
-                <h2 class="section-title">Контакты</h2>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <a href="https://mail.google.com/mail/?view=cm&to=fleykich@gmail.com" target="_blank">
-                        fleykich@gmail.com
-                    </a>
-                </div>
-                <div class="contact-item">
-                    <i class="fab fa-telegram"></i>
-                    <a href="https://t.me/forblockingbot" target="_blank">
-                    Тг бот - связь со мной
-                </a>
-            </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Не Россия/Не Украина</span>
-                </div>
-            </div>
+    <section class="glass-card">
+        <div class="section-h">Мои знания</div>
+        <div class="skills">
+            <div class="skill">Python</div><div class="skill">C#</div><div class="skill">SQL</div>
+            <div class="skill">HTML/CSS</div><div class="skill">GDScript</div>
+            <div class="skill">GIT</div><div class="skill">FL Studio</div>
         </div>
+    </section>
+
+    <!-- Твой мощный Плейлист -->
+    <section class="glass-card">
+        <div class="section-h"><i class="fas fa-play"></i> Моя музыка</div>
+        <div class="playlist-container">
+            
+            <!-- Скопируй этот блок 17 раз, меняя название и src -->
+            <div class="track-item">
+                <span class="track-name">01. Attacking!</span>
+                <audio controls src="music/Attacking!.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">02. It's Windy Today</span>
+                <audio controls src="music/It's Windy Today.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">03. Search For Inspiration</span>
+                <audio controls src="music/Search For Inspiration.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">04. It's Rainy Today (first idea)</span>
+                <audio controls src="music/It's Rainy Today (first idea).mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">05. Restless Thought</span>
+                <audio controls src="music/Restless Thought.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">06. Calm Environment</span>
+                <audio controls src="music/Calm Environment.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">07. Impression</span>
+                <audio controls src="music/Impression.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">08. Restless Thought 2</span>
+                <audio controls src="music/Restless Thought 2.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">09. Dangers!</span>
+                <audio controls src="music/Dangers!.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">10. Spirit Of Exploration</span>
+                <audio controls src="music/Spirit Of Exploration.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">11. Throught Dreams</span>
+                <audio controls src="music/Through Dreams.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">12. Strive For Aspiration</span>
+                <audio controls src="music/Strive For Aspiration.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">13. Pleasure</span>
+                <audio controls src="music/Pleasure.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">14. Calm Road</span>
+                <audio controls src="music/Calm Road.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">15. Evil Intentions</span>
+                <audio controls src="music/Evil Intentions.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">16. Spring Ascent</span>
+                <audio controls src="music/Spring Ascent.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">17. Superiority Expanded</span>
+                <audio controls src="music/Superiority Expanded.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">18. It's Rainy Today</span>
+                <audio controls src="music/It's Rainy Today.mp3"></audio>
+            </div>
+
+            <div class="track-item">
+                <span class="track-name">19. The Path To Beauty</span>
+                <audio controls src="music/The Path To Beauty.mp3"></audio>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="socials">
+        <a href="https://t.me/daystody" class="social-btn tg"><i class="fab fa-telegram"></i> Telegram</a>
+        <a href="mailto:daystody123@gmail.com" class="social-btn mail"><i class="fas fa-envelope"></i> Почта</a>
     </div>
+</div>
 
-    <script>
-        // Простая анимация при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            const elements = document.querySelectorAll('.profile-card, .section');
-            elements.forEach((el, index) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    el.style.transition = 'all 0.6s ease';
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
-        });
-    </script>
 </body>
 </html>
